@@ -212,6 +212,16 @@ class TestSplitter(unittest.TestCase):
         assert len(valid_data) == 1
         assert len(test_data) == 1
 
+    def test_butina_split_logs_cutoff(self):
+        """Test ButinaSplitter logs its cutoff without a formatting error."""
+        butina_splitter = dc.splits.ButinaSplitter(cutoff=0.5)
+        with self.assertLogs("deepchem.splits.splitters", level="INFO") as logs:
+            butina_splitter.split(load_butina_data())
+
+        self.assertIn(
+            "INFO:deepchem.splits.splitters:Performing butina clustering with cutoff of 0.5",
+            logs.output)
+
     def test_k_fold_splitter(self):
         """
         Test that we can 5 fold index wise over 5 points
